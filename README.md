@@ -42,7 +42,7 @@ PS.目前包括自行构建CvT-13，CvT-21的代码以及模型参数pth文件�
 
 3. 针对服务器端模型，除了当前主流的CNN模型之外，考虑到Transformer在全局建模能力上的优秀，我们借鉴了”**CvT:    Introducing Convolutions to Vision Transformers”**，当前其官方开源代码仍未发布，我们利用pytorch自行进行复现，代码已上传GitHub，我们将在论文作者的官方代码开源后重新进行实验，精度如Table 1.所示(蓝色为client model SOTA，红色为server model SOTA），与CNN SOTA对比试验如图2-2所示
 
-   ![](.\asset\acc vs epoch.bmp)
+   ![](asset/acc vs epoch.bmp)
 
    对比试验采用K=10的K折交叉折叠验证，优化算法采用Adam，初始学习率设置为0.0001，并采用余弦退火法来保证loss的平滑下降，对比试验采用华为云p100GPU，最大迭代次数设置为500，如Table 2. 所示
 
@@ -64,15 +64,15 @@ PS.目前包括自行构建CvT-13，CvT-21的代码以及模型参数pth文件�
 
    ​															**图3. Precision v.s. Recall of some classification models**
 
-   ![](.\asset\PR.bmp)
+   ![](asset/PR.bmp)
 
    根据来自温州附属第二医院口腔科主任陈丽芬女士的建议，医生们更加倾向于模型在判断时更加的激进即更倾向于将图片判断为正样例，我们首先在验证集上画出了混淆矩阵，如图4. 所示
 
-   ![](.\asset\confusion_matrix.bmp)
+   ![](asset/confusion_matrix.bmp)
 
    由混淆矩阵可见仍旧存在部分将龋齿误判为健康齿的可能性，随机我们调节了交叉损失熵函数中的class_weight,**将caries类别的weight调节为1.6之后**重新进行训练，所有模型的FN降低到了3%以下
 
 5. **由于目标检测模型的performance上达到了非常高的水平，意味着我们不需要标注全景片就可以获得非常大量的无标签牙齿图像，我们引入了Mean Teacher半监督模型并借鉴了Semi-supervised Medical Image Classification with Relation-driven Self-ensembling Model”引入了sample relation consistency(SRC)进一步提取无标签样本的语义信息，我们基于论文自己实现了带有SRC的MT半监督模型，并将论文中作为backbone的densenet121更换为表现更加优秀的CvT-13，具体结构如图5.所示，成就了我们数据集上的state of art，最终精度达到了94.7%**
 
-   ![](.\asset\ss-lrc-CvT.png)
+   ![](asset/ss-lrc-CvT.png)
 
